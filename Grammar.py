@@ -8,8 +8,11 @@ class Token:
 class Lexer:
     def __init__(self, pattern):
         self.pattern = pattern
-        self.symbols = { '(' : 'LEFT_PAREN', ')' : 'RIGHT_PAREN',
-                         '*' : 'STAR', '|' : 'ALT'}
+        self.symbols = { '(' : 'LEFT_PAREN',
+                         ')' : 'RIGHT_PAREN',
+                         '\b' : 'CONCAT',
+                         '*' : 'STAR',
+                         '|' : 'ALT'}
         self.cur_index = 0
         self.length = len(self.pattern)
 
