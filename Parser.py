@@ -9,7 +9,7 @@ class Parser:
     def consume(self, name):
         if self.next_token.name == name:
             self.next_token = self.lexer.get_token()
-        else:
+        elif self.next_token.name != name:
             raise Exception
 
     def parse(self):
@@ -18,7 +18,7 @@ class Parser:
 
     def exp(self):
         self.term()
-        if(self.next_token.name == 'ALT'):
+        if self.next_token.name == 'ALT':
             t = self.next_token
             self.consume('ALT')
             self.exp()

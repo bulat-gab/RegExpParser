@@ -3,7 +3,7 @@
 
 class State:
     def __init__(self, name):
-        self.epsilon_moves = [] # epsilon-closure
+        self.epsilon_moves = []
         self.transitions = {} # char : state
         self.name = name
         self.is_end = False
@@ -11,7 +11,7 @@ class State:
 class NFA:
     def __init__(self, start, end):
         self.start = start
-        self.end = end # start and end states
+        self.end = end
         end.is_end = True
 
     def addstate(self, state, state_set): # add state + recursively add epsilon transitions

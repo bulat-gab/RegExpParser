@@ -33,9 +33,6 @@ class Handler:
 
 
     def handle_alt(self, t, nfa_stack):
-        """
-        :type nfa_stack: NFA
-        """
         p1 = nfa_stack.pop()
         p0 = nfa_stack.pop()
         q0 = self.create_state()
