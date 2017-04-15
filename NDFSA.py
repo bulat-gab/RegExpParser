@@ -1,42 +1,44 @@
 # Non deterministic finite state automaton
 
+
 class State:
     def __init__(self, name):
-        self.epsilon_moves = []
-        self.transitions = {}
+        self.epsilon_moves = [] # epsilon-closure
+        self.transitions = {} # char : state
         self.name = name
         self.is_end = False
 
 class NFA:
-    def __init__(self, start: State, end: State):
+    def __init__(self, start, end):
         self.start = start
-        self.end = end
-        self.is_end = True
+        self.end = end # start and end states
+        end.is_end = True
 
-    def add_state(self, state, state_set):
+    def addstate(self, state, state_set): # add state + recursively add epsilon transitions
         if state in state_set:
             return
         state_set.add(state)
-        for e in state.epsilon_moves:
-            self.add_state(e, state_set)
+        for eps in state.epsilon_moves:
+            self.addstate(eps, state_set)
 
-    def match(self, input_str):
+    def match(self,s):
         current_states = set()
-        self.add_state(self.start, current_states)
+        self.addstate(self.start, current_states)
 
-        for character in input_str:
+        for c in s:
             next_states = set()
             for state in current_states:
-                if character in state.transitions.keys():
-                    trans_state = state.transitions[character]
-                    self.add_state(trans_state, next_states)
+                if c in state.transitions.keys():
+                    trans_state = state.transitions[c]
+                    self.addstate(trans_state, next_states)
+
 
             current_states = next_states
 
         for s in current_states:
             if s.is_end:
                 return True
-            return False
+        return False
 
 
 

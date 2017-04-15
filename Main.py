@@ -1,25 +1,69 @@
 import unittest
 
-import Regex
+import MyRegexInterface
+import regex
 from IO import IO
 
 
 def test():
-    nfa = Regex.compile('0|1')
+    nfa = MyRegexInterface.compile('0|1')
 
     print(nfa.match(''))
 
 if __name__ == '__main__':
     unittest.main()
 
-class TestRegexParser(unittest.TestCase):
+
+
+class Test_RegexParser(unittest.TestCase):
     def test_simple_match(self):
-        nfa = Regex.compile('0')
+        nfa = regex.compile('0')
         result = nfa.match('0')
         self.assertEqual(True, result)
 
-    def test_klenee_star(self):
-        nfa = Regex.compile('01*')
+    def test_klenee_star_match_1(self):
+        nfa = regex.compile('01*')
         result = nfa.match('011')
         self.assertEqual(True, result)
+
+    def test_klenee_star_match_2(self):
+        nfa = regex.compile('0*1*')
+        result = nfa.match('00011')
+        self.assertEqual(True, result)
+
+    def test_from_example_1(self):
+        nfa = regex.compile('01*')
+        result = nfa.match('000011111')
+        self.assertEqual(False, result)
+
+    def test_from_example_2(self):
+        nfa = regex.compile('01*')
+        result = nfa.match('011111')
+        self.assertEqual(True, result)
+
+    def test_from_example_3(self):
+        nfa = regex.compile('01*')
+        result = nfa.match('10')
+        self.assertEqual(False, result)
+
+    def test_from_example_4(self):
+        nfa = regex.compile('01*')
+        result = nfa.match('0')
+        self.assertEqual(True, result)
+
+    def test_from_example_2_1(self):
+        nfa = regex.compile('(0|1)01')
+        result = nfa.match('001')
+        self.assertEqual(True, result)
+
+    def test_from_example_2_2(self):
+        nfa = regex.compile('(0|1)01')
+        result = nfa.match('101')
+        self.assertEqual(True, result)
+
+    def test_from_example_2_3(self):
+        nfa = regex.compile('(0|1)01')
+        result = nfa.match('010')
+        self.assertEqual(False, result)
+
 
