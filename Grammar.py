@@ -5,6 +5,9 @@ class Token:
         self.name = name
         self.value = value
 
+    def __str__(self):
+        return self.name + ":" + self.value
+
 class Lexer:
     def __init__(self, pattern):
         self.pattern = pattern

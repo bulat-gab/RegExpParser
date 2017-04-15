@@ -8,7 +8,7 @@ class State:
         self.is_end = False
 
 class NFA:
-    def __init__(self, start: State, end: State) -> object:
+    def __init__(self, start: State, end: State):
         self.start = start
         self.end = end
         self.is_end = True
@@ -33,8 +33,8 @@ class NFA:
 
             current_states = next_states
 
-        for state in current_states:
-            if state.is_end:
+        for s in current_states:
+            if s.is_end:
                 return True
             return False
 

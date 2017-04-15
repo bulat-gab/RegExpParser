@@ -45,4 +45,3 @@ class Parser:
             self.tokens.append(self.next_token)
             self.consume('CHAR')
 
-    
