@@ -10,15 +10,15 @@ class Token:
 
 class Lexer:
     def __init__(self, pattern):
-        self.source = pattern
+        self.pattern = pattern
         self.symbols = {'(':'LEFT_PAREN', ')':'RIGHT_PAREN', '*':'STAR',
                         '|':'ALT', '\b':'CONCAT'}
         self.cur_index = 0
-        self.length = len(self.source)
+        self.length = len(self.pattern)
 
     def get_token(self):
         if self.cur_index < self.length:
-            c = self.source[self.cur_index]
+            c = self.pattern[self.cur_index]
             self.cur_index += 1
             if c not in self.symbols.keys(): # CHAR
                 token = Token('CHAR', c)

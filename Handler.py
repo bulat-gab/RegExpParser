@@ -11,9 +11,11 @@ class Handler:
         self.state_count = 0
 
     def create_state(self):
+        new_state = State('q' + str(self.state_count))
         self.state_count += 1
-        #print("State_count = " + str(self.state_count))
-        return State('q' + str(self.state_count))
+        #print(str(new_state) + " ") # TODO remove print_state
+
+        return new_state
 
     def handle_char(self, t, nfa_stack):
         q0 = self.create_state()

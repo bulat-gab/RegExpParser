@@ -8,6 +8,9 @@ class State:
         self.name = name
         self.is_end = False
 
+    def __str__(self):
+        return self.name
+
 class NFA:
     def __init__(self, start, end):
         self.start = start
