@@ -11,6 +11,13 @@ class State:
     def __str__(self):
         return self.name
 
+    def dispose(self):
+        self.epsilon_moves = None
+        self.transitions = None
+        self.name = "NONE"
+        self.is_end = None
+
+
 class NFA:
     def __init__(self, start, end):
         self.start = start
