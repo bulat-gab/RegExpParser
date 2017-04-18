@@ -14,5 +14,8 @@ def compile(p):
         handler.handlers[t.name](t, nfa_stack)
     
     assert len(nfa_stack) == 1
-    return nfa_stack.pop() 
+
+    nfa = nfa_stack.pop()
+    nfa.num_of_states = handler.state_count
+    return nfa
 

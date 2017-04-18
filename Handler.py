@@ -29,11 +29,18 @@ class Handler:
         p0 = nfa_stack.pop()
         #p0.start.epsilon_moves.append(p1.start)
 
-        for key, value in p0.start.transitions.items():
-            if value == p0.end:
-                p0.start.transitions[key] = p1.start
 
-        p0.end.dispose()
+        #for key, value in p0.start.transitions.items():
+         #   if value == p0.end:
+          #      p0.start.transitions[key] = p1.start
+
+        p0.end.transitions.update(p1.start.transitions)
+        p0.end.epsilon_moves.extend(p1.start.epsilon_moves)
+        p0.start.is_end = False
+        p1.start.dispose()
+
+
+        #p0.end.dispose()
         #self.state_count -= 1
         nfa = NFA(p0.start, p1.end)
         nfa_stack.append(nfa)
@@ -43,9 +50,17 @@ class Handler:
     def handle_alt(self, t, nfa_stack):
         p1 = nfa_stack.pop()
         p0 = nfa_stack.pop()
+
+        # initial alternation state
         q0 = self.create_state()
+
+        # create epsilon moves from init state to alt states
         q0.epsilon_moves = [p0.start, p1.start]
+
+        # create exiting alt state
         q1 = self.create_state()
+
+        # create epsilon moves from alt states to exit
         p0.end.epsilon_moves.append(q1)
         p1.end.epsilon_moves.append(q1)
         p0.end.is_end = False
