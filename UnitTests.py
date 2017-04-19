@@ -1,10 +1,5 @@
 import unittest
-
 import Regex
-
-if __name__ == '__main__':
-    unittest.main()
-
 
 
 class Test_RegexParse(unittest.TestCase):

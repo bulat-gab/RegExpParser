@@ -1,7 +1,8 @@
 # Non deterministic finite state automaton
 
 # Global variables used to build path in NFA that matches given regExp
-stack_size = 0
+
+stack_size = 0 # depth of recursion
 isFinished = False
 path = []
 
@@ -17,10 +18,7 @@ class State:
         return self.name
 
     def dispose(self):
-        self.epsilon_moves = None
-        self.transitions = None
-        self.name = "NONE"
-        self.is_end = None
+        del self
 
 
 class NFA:
@@ -28,7 +26,14 @@ class NFA:
         self.start = start
         self.end = end
         end.is_end = True
-        self.num_of_states = 0 # initialized only in the last NFA, intermediate NFA's dont need it
+
+        # self.num_of_states initialized only in the last NFA, intermediate NFAs dont need it.
+        # In fact, it is equal to a number of ALL states that are created while processing
+        # the regexp. When two NFAs are concatenated the final state of the first NFA
+        # merged with the start state of the second NFA, thus two states result in one
+        # I don't need to know the actual number of states, because it is used only to prevent
+        # an infinite loops while matching the string.
+        self.num_of_states = 0
 
 
     def match(self, s):
@@ -45,25 +50,24 @@ class NFA:
         if len(path) == 1:
             path = []
             stq = "\n"
-        print(stq)
-        #return stq if path else ""
-        #return True if path else False
+        #print(stq)
         return path
 
     def _recursiveMatch(self, cur_st, s):
         global isFinished, stack_size, path
+
+        # Accepting case, string is consumed and final state is reached
         if len(s) == 0 and cur_st.is_end == True:
             stack_size -= 1
             isFinished = True
-            # path.append(self.end)
             return
 
-        # input not consumed, but we already arrived at final state
+        # input not consumed, but we have already arrived at final state
         if len(s) != 0 and cur_st.is_end == True:
             stack_size -= 1
             return
 
-        # infinite recursion
+        # infinite recursion case, this is crude upper bound for a depth of recursion
         if stack_size > self.num_of_states * len(s)+100:
             stack_size -= 1
             return
@@ -79,7 +83,6 @@ class NFA:
                     if isFinished:
                         return
                     else:
-                        #self._goBack(cur_st)
                         stack_size -= 1
                         path.pop()
                         cur_st = path[-1]
@@ -93,15 +96,6 @@ class NFA:
             if isFinished:
                 return
             else:
-                #self._goBack(cur_st)
                 stack_size -= 1
                 path.pop()
                 cur_st = path[-1]
-
-    def _goBack(self, cur_st):
-        global path, stack_size
-        if 1:
-            stack_size -= 1
-            path.pop()
-            cur_st = path[-1]
-        else: raise Exception("Can't go back in empty path")

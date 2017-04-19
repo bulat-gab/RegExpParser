@@ -1,5 +1,4 @@
-# Grammar file contains classes to perform partition of
-# regular expression on tokens
+# Lexer is a class for performing partition of a regexp into the tokens
 
 class Token:
     def __init__(self, name, value):
