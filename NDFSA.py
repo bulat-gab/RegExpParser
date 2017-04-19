@@ -1,6 +1,6 @@
 # Non deterministic finite state automaton
 
-
+# Global variables used to build path in NFA that matches given regExp
 stack_size = 0
 isFinished = False
 path = []
@@ -11,7 +11,6 @@ class State:
         self.transitions = {} # char : state
         self.name = name
         self.is_end = False
-
 
 
     def __str__(self):
@@ -29,8 +28,7 @@ class NFA:
         self.start = start
         self.end = end
         end.is_end = True
-
-        self.num_of_states = 0
+        self.num_of_states = 0 # initialized only in the last NFA, intermediate NFA's dont need it
 
 
     def match(self, s):
@@ -40,17 +38,19 @@ class NFA:
         path = []
 
         path.append(self.start)
-        self._recur_match(self.start, s)
+        self._recursiveMatch(self.start, s)
         stq = ""
         for p in path: stq += (str(p) + " ")
-        print(stq)
+
         if len(path) == 1:
             path = []
             stq = "\n"
+        print(stq)
         #return stq if path else ""
-        return True if path else False
+        #return True if path else False
+        return path
 
-    def _recur_match(self, cur_st, s):
+    def _recursiveMatch(self, cur_st, s):
         global isFinished, stack_size, path
         if len(s) == 0 and cur_st.is_end == True:
             stack_size -= 1
@@ -74,11 +74,12 @@ class NFA:
                 if cur_st:
                     path.append(cur_st)
                     stack_size += 1
-                    self._recur_match(cur_st, s[1:])
+                    self._recursiveMatch(cur_st, s[1:])
 
                     if isFinished:
                         return
                     else:
+                        #self._goBack(cur_st)
                         stack_size -= 1
                         path.pop()
                         cur_st = path[-1]
@@ -87,26 +88,20 @@ class NFA:
             cur_st = e
             stack_size += 1
             path.append(cur_st)
-            self._recur_match(cur_st, s)
-            #cur_st = self._goBack()
+            self._recursiveMatch(cur_st, s)
+
             if isFinished:
                 return
             else:
+                #self._goBack(cur_st)
                 stack_size -= 1
                 path.pop()
                 cur_st = path[-1]
 
-
-
-    def _goBack(self):
-        if path:
+    def _goBack(self, cur_st):
+        global path, stack_size
+        if 1:
+            stack_size -= 1
             path.pop()
-            return path[-1]
-        else:
-            raise Exception("Path is empty, can't go back")
-
-
-
-
-
-
+            cur_st = path[-1]
+        else: raise Exception("Can't go back in empty path")

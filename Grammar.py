@@ -1,4 +1,5 @@
-# Grammar file contains regular expression's partition on tokens
+# Grammar file contains classes to perform partition of
+# regular expression on tokens
 
 class Token:
     def __init__(self, name, value):

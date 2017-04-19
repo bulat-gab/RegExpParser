@@ -1,5 +1,7 @@
 from Grammar import *
 
+# Recursive descent parser with postfix notation
+
 class Parser:
     def __init__(self, lexer):
         self.lexer = lexer
@@ -10,7 +12,7 @@ class Parser:
         if self.next_token.name == name:
             self.next_token = self.lexer.get_token()
         elif self.next_token.name != name:
-            raise Exception
+            raise Exception("Parse error")
 
     def parse(self):
         self.exp()
