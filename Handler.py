@@ -36,7 +36,7 @@ class Handler:
 
         p0.end.transitions.update(p1.start.transitions)
         p0.end.epsilon_moves.extend(p1.start.epsilon_moves)
-        p0.start.is_end = False
+        p0.end.is_end = False
         p1.start.dispose()
 
 
